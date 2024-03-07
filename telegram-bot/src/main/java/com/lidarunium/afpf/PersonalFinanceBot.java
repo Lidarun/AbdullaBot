@@ -13,16 +13,17 @@ import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.updates.SetWebhook;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage;
-import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.starter.SpringWebhookBot;
+
+import java.util.Objects;
 
 @Slf4j
 @Getter
 @Setter
 @Component
-public class PersonalFinanceBot extends SpringWebhookBot implements ExecuteMessageService {
+public class PersonalFinanceBot extends SpringWebhookBot {
     private String botPath;
     private String botUsername;
     private MessageHandler messageHandler;
@@ -41,15 +42,18 @@ public class PersonalFinanceBot extends SpringWebhookBot implements ExecuteMessa
     }
 
     @Override
+    public String getBotPath() {
+        return this.botPath;
+    }
+
+    @Override
+    public String getBotUsername() {
+        return this.botUsername;
+    }
+
+    @Override
     public BotApiMethod<?> onWebhookUpdateReceived(Update update) {
-        try {
-            return handleUpdate(update);
-
-        } catch (Exception e){
-            log.error(e.getMessage());
-        }
-
-        return null;
+        return handleUpdate(update);
     }
 
     private BotApiMethod<?> handleUpdate(Update update) {
@@ -61,11 +65,21 @@ public class PersonalFinanceBot extends SpringWebhookBot implements ExecuteMessa
         if (update.hasCallbackQuery())
             sendMessage = callbackQueryHandler.replyMessage(update.getCallbackQuery());
 
-        return sendMessage;
+        assert sendMessage != null;
+        Command command = userCache.getBotState(Long.parseLong(sendMessage.getChatId()));
+        if (Objects.equals(command, Command.DELETE_PREVIOUS_MESSAGE) || Objects.equals(command, Command.SALARY)) {
+            deleteMessage(userCache.getDeleteMessage(Long.parseLong(sendMessage.getChatId())));
+
+            if (Objects.equals(command, Command.DELETE_PREVIOUS_MESSAGE))
+                userCache.setBotState(Long.parseLong(sendMessage.getChatId()), null);
+        }
+
+        DeleteMessage deleteMessage = executeMessage(sendMessage);
+        userCache.setDeleteMessage(Long.parseLong(deleteMessage.getChatId()), deleteMessage);
+        return null;
     }
 
-    @Override
-    public DeleteMessage executeMessage(SendMessage sendMessage) {
+    private DeleteMessage executeMessage(SendMessage sendMessage) {
         try {
             Integer msgId = execute(sendMessage).getMessageId();
             return new DeleteMessage(sendMessage.getChatId(), msgId);
@@ -76,8 +90,7 @@ public class PersonalFinanceBot extends SpringWebhookBot implements ExecuteMessa
         }
     }
 
-    @Override
-    public void deleteMessage(DeleteMessage deleteMessage) {
+    private void deleteMessage(DeleteMessage deleteMessage) {
         try {
             execute(deleteMessage);
 
@@ -85,15 +98,5 @@ public class PersonalFinanceBot extends SpringWebhookBot implements ExecuteMessa
             log.warn(e.getMessage());
             throw new RuntimeException(e);
         }
-    }
-
-    @Override
-    public String getBotPath() {
-        return this.botPath;
-    }
-
-    @Override
-    public String getBotUsername() {
-        return this.botUsername;
     }
 }

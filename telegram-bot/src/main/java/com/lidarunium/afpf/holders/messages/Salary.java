@@ -56,6 +56,7 @@ public class Salary implements MessageHolder {
                 msg = "Send me the real numbers " +
                         "or click ↓";
                 sendMessage = generator.generateMessage(chatID, msg, getMessageButtons());
+                command = Command.SALARY;
             }
         }
 

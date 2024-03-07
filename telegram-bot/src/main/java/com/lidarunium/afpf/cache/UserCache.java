@@ -23,8 +23,8 @@ public class UserCache implements Cache {
     }
 
     @Override
-    public void setDeleteMessage(long userID, DeleteMessage deleteMessage) {
-        deleteMessagesCache.put(userID, deleteMessage);
+    public void setDeleteMessage(long chatID, DeleteMessage deleteMessage) {
+        deleteMessagesCache.put(chatID, deleteMessage);
     }
 
     @Override

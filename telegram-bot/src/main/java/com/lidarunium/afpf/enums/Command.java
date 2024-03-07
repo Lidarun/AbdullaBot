@@ -9,5 +9,6 @@ public enum Command {
     EXPENSE,
     SALARY_SIZE,
     CANCEL,
-    BACK;
+    BACK,
+    DELETE_PREVIOUS_MESSAGE;
 }

@@ -35,6 +35,7 @@ public class Income implements MessageHolder {
         String msg = "Income: ";
         InlineKeyboardMarkup inlineKeyboard = getMessageButtons();
 
+        userCache.setBotState(chatID, Command.DELETE_PREVIOUS_MESSAGE);
         return generator.generateMessage(chatID, msg, inlineKeyboard);
     }
 

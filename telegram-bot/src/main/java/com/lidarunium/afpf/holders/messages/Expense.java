@@ -11,13 +11,13 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 
 @Component
 @RequiredArgsConstructor
-public class Cancel implements MessageHolder {
+public class Expense implements MessageHolder {
     private final MessageGenerator generator;
     private final UserCache userCache;
 
     @Override
     public Command getCommand() {
-        return Command.CANCEL;
+        return Command.EXPENSE;
     }
 
     @Override
