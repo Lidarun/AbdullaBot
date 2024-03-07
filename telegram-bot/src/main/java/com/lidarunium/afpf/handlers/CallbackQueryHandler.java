@@ -30,6 +30,15 @@ public class CallbackQueryHandler {
                 default -> null;
             };
 
+        else {
+            if (Objects.equals(command, Command.SALARY))
+                command = switch (query) {
+                    case "Cancel" -> Command.CANCEL;
+                    case "Back" -> Command.BACK;
+                    default -> null;
+                };
+        }
+
         return commandHandler.getMessageByBotState(command, callbackQuery.getMessage());
     }
 }

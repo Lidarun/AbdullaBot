@@ -1,4 +1,4 @@
-package com.lidarunium.afpf.holders.keyboards;
+package com.lidarunium.afpf.holders.menu;
 
 import com.lidarunium.afpf.enums.Command;
 import com.lidarunium.afpf.holders.KeyboardHolder;
@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class StartKeyboards implements KeyboardHolder {
+public class StartMenu implements KeyboardHolder {
     @Override
     public Command getCommandHandler() {
         return Command.START;
