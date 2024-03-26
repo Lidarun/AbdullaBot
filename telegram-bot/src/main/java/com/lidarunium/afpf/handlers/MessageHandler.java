@@ -1,6 +1,7 @@
 package com.lidarunium.afpf.handlers;
 
-import com.lidarunium.afpf.cache.UserCache;
+import com.lidarunium.afpf.cache.BotStateCache;
+import com.lidarunium.afpf.cache.Cache;
 import com.lidarunium.afpf.enums.Command;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,11 +16,11 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class MessageHandler {
     private final BotCommandHandler context;
-    private final UserCache userCache;
+    private final BotStateCache botStateCache;
 
     public SendMessage replyMessage(Message message) {
         long chatID = message.getChatId();
-        Command command = userCache.getBotState(chatID);
+        Command command = botStateCache.getBotState(chatID);
 
         if (Objects.isNull(command))
             command = switch (message.getText()) {

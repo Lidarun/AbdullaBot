@@ -1,7 +1,8 @@
 package com.lidarunium.afpf.configuration;
 
 import com.lidarunium.afpf.PersonalFinanceBot;
-import com.lidarunium.afpf.cache.UserCache;
+import com.lidarunium.afpf.cache.BotStateCache;
+import com.lidarunium.afpf.cache.DeleteMessageCache;
 import com.lidarunium.afpf.handlers.CallbackQueryHandler;
 import com.lidarunium.afpf.handlers.MessageHandler;
 import lombok.RequiredArgsConstructor;
@@ -41,8 +42,9 @@ public class SpringConfiguration {
                                                  String botToken,
                                                  MessageHandler messageHandler,
                                                  CallbackQueryHandler callbackQueryHandler,
-                                                 UserCache userCache) {
-        PersonalFinanceBot bot = new PersonalFinanceBot(defaultBotOptions, setWebhook, botToken, messageHandler, callbackQueryHandler, userCache);
+                                                 BotStateCache botStateCache,
+                                                 DeleteMessageCache deleteMessageCache) {
+        PersonalFinanceBot bot = new PersonalFinanceBot(defaultBotOptions, setWebhook, botToken, messageHandler, callbackQueryHandler, botStateCache, deleteMessageCache);
 
         bot.setBotPath(botConfiguration.getWebhookPath());
         bot.setBotUsername(botConfiguration.getUsername());

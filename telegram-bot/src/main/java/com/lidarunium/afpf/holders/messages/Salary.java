@@ -1,6 +1,6 @@
 package com.lidarunium.afpf.holders.messages;
 
-import com.lidarunium.afpf.cache.UserCache;
+import com.lidarunium.afpf.cache.BotStateCache;
 import com.lidarunium.afpf.enums.Command;
 import com.lidarunium.afpf.holders.MessageHolder;
 import com.lidarunium.afpf.service.MessageGenerator;
@@ -21,7 +21,7 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class Salary implements MessageHolder {
     private final MessageGenerator generator;
-    private final UserCache cache;
+    private final BotStateCache botStateCache;
 
     @Override
     public Command getCommand() {
@@ -35,7 +35,7 @@ public class Salary implements MessageHolder {
 
     private SendMessage generateMessage(Message message) {
         long chatID = message.getChatId();
-        Command command = cache.getBotState(chatID);
+        Command command = botStateCache.getBotState(chatID);
         String userMsg = message.getText();
         SendMessage sendMessage = null;
         String msg = null;
@@ -60,7 +60,7 @@ public class Salary implements MessageHolder {
             }
         }
 
-        cache.setBotState(chatID, command);
+        botStateCache.setBotState(chatID, command);
 
         return sendMessage;
     }

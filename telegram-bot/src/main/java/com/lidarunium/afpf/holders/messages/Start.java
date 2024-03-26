@@ -1,6 +1,6 @@
 package com.lidarunium.afpf.holders.messages;
 
-import com.lidarunium.afpf.cache.Cache;
+import com.lidarunium.afpf.cache.BotStateCache;
 import com.lidarunium.afpf.enums.Command;
 import com.lidarunium.afpf.handlers.BotKeyboardHandler;
 import com.lidarunium.afpf.holders.MessageHolder;
@@ -16,7 +16,7 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMar
 public class Start implements MessageHolder {
     private final MessageGenerator generator;
     private final BotKeyboardHandler keyboardHandler;
-    private final Cache cache;
+    private final BotStateCache botStateCache;
 
     @Override
     public Command getCommand() {
@@ -34,7 +34,7 @@ public class Start implements MessageHolder {
         String msg = "Greetings Mr. " + message.getChat().getFirstName() + "!";
         ReplyKeyboardMarkup replyKeyboard = keyboardHandler.getKeyboardByBotCommand(Command.START);
 
-        cache.setBotState(chatID, null);
+        botStateCache.setBotState(chatID, null);
         return generator.generateMessage(chatID, msg, replyKeyboard);
     }
 }

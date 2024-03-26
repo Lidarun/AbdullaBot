@@ -1,6 +1,7 @@
 package com.lidarunium.afpf;
 
-import com.lidarunium.afpf.cache.UserCache;
+import com.lidarunium.afpf.cache.BotStateCache;
+import com.lidarunium.afpf.cache.DeleteMessageCache;
 import com.lidarunium.afpf.enums.Command;
 import com.lidarunium.afpf.handlers.CallbackQueryHandler;
 import com.lidarunium.afpf.handlers.MessageHandler;
@@ -28,17 +29,21 @@ public class PersonalFinanceBot extends SpringWebhookBot {
     private String botUsername;
     private MessageHandler messageHandler;
     private CallbackQueryHandler callbackQueryHandler;
-    private final UserCache userCache;
+    private final BotStateCache botStateCache;
+    private final DeleteMessageCache deleteMessageCache;
 
     public PersonalFinanceBot(DefaultBotOptions options,
                               SetWebhook setWebhook,
                               String botToken,
                               MessageHandler messageHandler,
-                              CallbackQueryHandler callbackQueryHandler, UserCache userCache) {
+                              CallbackQueryHandler callbackQueryHandler,
+                              BotStateCache botStateCache,
+                              DeleteMessageCache deleteMessageCache) {
         super(options, setWebhook, botToken);
         this.messageHandler = messageHandler;
         this.callbackQueryHandler = callbackQueryHandler;
-        this.userCache = userCache;
+        this.botStateCache = botStateCache;
+        this.deleteMessageCache = deleteMessageCache;
     }
 
     @Override
@@ -66,16 +71,16 @@ public class PersonalFinanceBot extends SpringWebhookBot {
             sendMessage = callbackQueryHandler.replyMessage(update.getCallbackQuery());
 
         assert sendMessage != null;
-        Command command = userCache.getBotState(Long.parseLong(sendMessage.getChatId()));
+        Command command = botStateCache.getBotState(Long.parseLong(sendMessage.getChatId()));
         if (Objects.equals(command, Command.DELETE_PREVIOUS_MESSAGE) || Objects.equals(command, Command.SALARY)) {
-            deleteMessage(userCache.getDeleteMessage(Long.parseLong(sendMessage.getChatId())));
+            deleteMessage(deleteMessageCache.getDeleteMessage(Long.parseLong(sendMessage.getChatId())));
 
             if (Objects.equals(command, Command.DELETE_PREVIOUS_MESSAGE))
-                userCache.setBotState(Long.parseLong(sendMessage.getChatId()), null);
+                botStateCache.setBotState(Long.parseLong(sendMessage.getChatId()), null);
         }
 
         DeleteMessage deleteMessage = executeMessage(sendMessage);
-        userCache.setDeleteMessage(Long.parseLong(deleteMessage.getChatId()), deleteMessage);
+        deleteMessageCache.setDeleteMessage(Long.parseLong(deleteMessage.getChatId()), deleteMessage);
         return null;
     }
 

@@ -1,6 +1,7 @@
 package com.lidarunium.afpf.handlers;
 
-import com.lidarunium.afpf.cache.UserCache;
+import com.lidarunium.afpf.cache.BotStateCache;
+import com.lidarunium.afpf.cache.Cache;
 import com.lidarunium.afpf.enums.Command;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -13,12 +14,12 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class CallbackQueryHandler {
     private final BotCommandHandler commandHandler;
-    private final UserCache cache;
+    private final BotStateCache botStateCache;
 
     public SendMessage replyMessage(CallbackQuery callbackQuery) {
         String query = callbackQuery.getData();
         long chatID = callbackQuery.getMessage().getChatId();
-        Command command = cache.getBotState(chatID);
+        Command command = botStateCache.getBotState(chatID);
 
         if (Objects.isNull(command))
             command = switch (query) {

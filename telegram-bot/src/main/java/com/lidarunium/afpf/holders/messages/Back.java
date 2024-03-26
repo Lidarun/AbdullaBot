@@ -1,6 +1,6 @@
 package com.lidarunium.afpf.holders.messages;
 
-import com.lidarunium.afpf.cache.Cache;
+import com.lidarunium.afpf.cache.BotStateCache;
 import com.lidarunium.afpf.enums.Command;
 import com.lidarunium.afpf.handlers.BotCommandHandler;
 import com.lidarunium.afpf.holders.MessageHolder;
@@ -18,7 +18,7 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class Back implements MessageHolder {
     private final MessageGenerator generator;
-    private final Cache cache;
+    private final BotStateCache cache;
 
     @Autowired @Lazy
     private BotCommandHandler context;
