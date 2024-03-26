@@ -7,6 +7,7 @@ import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage
 public interface Cache {
     void setBotState(long chatID, Command command);
     Command getBotState(long chatID);
+    Command getPreviousBotState(long chatID);
     void setDeleteMessage(long chatID, DeleteMessage deleteMessage);
     DeleteMessage getDeleteMessage(long chatID);
 }

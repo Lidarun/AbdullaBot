@@ -1,17 +1,27 @@
 package com.lidarunium.afpf.holders.messages;
 
+import com.lidarunium.afpf.cache.Cache;
 import com.lidarunium.afpf.enums.Command;
+import com.lidarunium.afpf.handlers.BotCommandHandler;
 import com.lidarunium.afpf.holders.MessageHolder;
 import com.lidarunium.afpf.service.MessageGenerator;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
+
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
 public class Back implements MessageHolder {
     private final MessageGenerator generator;
+    private final Cache cache;
+
+    @Autowired @Lazy
+    private BotCommandHandler context;
 
     @Override
     public Command getCommand() {
@@ -24,9 +34,13 @@ public class Back implements MessageHolder {
     }
 
     private SendMessage generateMessage(Message message) {
-        String msg = "TODO return previous buttons";
         long chatID = message.getChatId();
 
-        return generator.generateMessage(chatID, msg);
+        Command command = cache.getPreviousBotState(chatID);
+        if (Objects.nonNull(command)) {
+            cache.setBotState(chatID, null);
+            return context.getMessageByBotState(command, message);
+        }
+        return generator.generateMessage(chatID, "TODO: Something went wrong BACK button");
     }
 }

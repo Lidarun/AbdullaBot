@@ -29,6 +29,6 @@ public class Cancel implements MessageHolder {
         long chatID = message.getChatId();
         userCache.setBotState(chatID, Command.DELETE_PREVIOUS_MESSAGE);
 
-        return generator.generateMessage(chatID, "Success!");
+        return generator.generateMessage(chatID, "The process has been successfully canceled!");
     }
 }

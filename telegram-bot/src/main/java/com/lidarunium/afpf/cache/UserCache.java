@@ -10,16 +10,23 @@ import java.util.Map;
 @Component
 public class UserCache implements Cache {
     private Map<Long, Command> statesCache = new HashMap<>();
+    private Map<Long, Command> previousStatesCache = new HashMap<>();
     private Map<Long, DeleteMessage> deleteMessagesCache = new HashMap<>();
 
     @Override
     public void setBotState(long chatID, Command command) {
         statesCache.put(chatID, command);
+        previousStatesCache.put(chatID, command);
     }
 
     @Override
     public Command getBotState(long chatID) {
         return statesCache.get(chatID);
+    }
+
+    @Override
+    public Command getPreviousBotState(long chatID) {
+        return previousStatesCache.get(chatID);
     }
 
     @Override
