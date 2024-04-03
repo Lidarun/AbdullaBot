@@ -13,21 +13,11 @@
     <version>${parent.version}</version>
 
     <properties>
-        <spring-cloud.version>2023.0.0</spring-cloud.version>
         <jakarta-validation.version>3.0.2</jakarta-validation.version>
         <telegrambots.version>6.8.0</telegrambots.version>
     </properties>
 
     <dependencies>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-openfeign</artifactId>
-        </dependency>
-
         <dependency>
             <groupId>jakarta.validation</groupId>
             <artifactId>jakarta.validation-api</artifactId>
@@ -38,24 +28,7 @@
             <artifactId>telegrambots-spring-boot-starter</artifactId>
             <version>${telegrambots.version}</version>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>com.lidarunium</groupId>-->
-<!--            <artifactId>commons</artifactId>-->
-<!--            <version>1.0</version>-->
-<!--        </dependency>-->
     </dependencies>
-
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-dependencies</artifactId>
-                <version>${spring-cloud.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
 
     <build>
         <plugins>
