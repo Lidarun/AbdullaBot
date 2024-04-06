@@ -2,6 +2,7 @@ package com.lidarunium.afpf.holders.messages;
 
 import com.lidarunium.afpf.enums.Command;
 import com.lidarunium.afpf.holders.MessageHolder;
+import com.lidarunium.afpf.service.ButtonGenerator;
 import com.lidarunium.afpf.service.MessageGenerator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -16,7 +17,8 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 public class Finance implements MessageHolder {
-    private final MessageGenerator generator;
+    private final MessageGenerator messageGenerator;
+    private final ButtonGenerator buttonGenerator;
 
     @Override
     public Command getCommand() {
@@ -33,27 +35,31 @@ public class Finance implements MessageHolder {
         long chatID = message.getChatId();
         InlineKeyboardMarkup inlineKeyboard = getMessageButtons();
 
-        return generator.generateMessage(chatID, msg, inlineKeyboard);
+        return messageGenerator.generateMessage(chatID, msg, inlineKeyboard);
     }
 
     private InlineKeyboardMarkup getMessageButtons() {
         InlineKeyboardMarkup replyKeyboardMarkup = new InlineKeyboardMarkup();
 
-        InlineKeyboardButton salary = InlineKeyboardButton.builder()
+        InlineKeyboardButton Income = InlineKeyboardButton.builder()
                 .text("Income")
                 .callbackData("Income")
                 .build();
-        InlineKeyboardButton other = InlineKeyboardButton.builder()
+        InlineKeyboardButton Expense = InlineKeyboardButton.builder()
                 .text("Expense")
                 .callbackData("Expense")
                 .build();
 
-        List<InlineKeyboardButton> keyboardButtonsRow = new ArrayList<>();
-        keyboardButtonsRow.add(salary);
-        keyboardButtonsRow.add(other);
+        List<InlineKeyboardButton> keyboardButtonsRow1 = new ArrayList<>();
+        keyboardButtonsRow1.add(Income);
+        keyboardButtonsRow1.add(Expense);
+
+        List<InlineKeyboardButton> keyboardButtonsRow2 = new ArrayList<>();
+        keyboardButtonsRow2.add(buttonGenerator.generateCancelButton());
 
         List<List<InlineKeyboardButton>> keyboard = new ArrayList<>();
-        keyboard.add(keyboardButtonsRow);
+        keyboard.add(keyboardButtonsRow1);
+        keyboard.add(keyboardButtonsRow2);
 
         replyKeyboardMarkup.setKeyboard(keyboard);
 

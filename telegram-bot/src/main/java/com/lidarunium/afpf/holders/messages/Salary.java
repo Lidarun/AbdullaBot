@@ -3,6 +3,7 @@ package com.lidarunium.afpf.holders.messages;
 import com.lidarunium.afpf.cache.BotStateCache;
 import com.lidarunium.afpf.enums.Command;
 import com.lidarunium.afpf.holders.MessageHolder;
+import com.lidarunium.afpf.service.ButtonGenerator;
 import com.lidarunium.afpf.service.MessageGenerator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,7 +21,8 @@ import java.util.Objects;
 @Component
 @RequiredArgsConstructor
 public class Salary implements MessageHolder {
-    private final MessageGenerator generator;
+    private final MessageGenerator messageGenerator;
+    private final ButtonGenerator buttonGenerator;
     private final BotStateCache botStateCache;
 
     @Override
@@ -42,26 +44,25 @@ public class Salary implements MessageHolder {
 
         if (Objects.isNull(command)) {
             msg = "How much?";
-            sendMessage = generator.generateMessage(chatID, msg);
+            sendMessage = messageGenerator.generateMessage(chatID, msg);
             command = Command.SALARY;
 
         } else {
             boolean res = setSalary(userMsg);
             if (res) {
                 msg = "Salary: " + message.getText();
-                sendMessage = generator.generateMessage(chatID, msg);
+                sendMessage = messageGenerator.generateMessage(chatID, msg);
                 command = null;
 
             } else {
                 msg = "Send me the real numbers " +
                         "or click ↓";
-                sendMessage = generator.generateMessage(chatID, msg, getMessageButtons());
+                sendMessage = messageGenerator.generateMessage(chatID, msg, getMessageButtons());
                 command = Command.SALARY;
             }
         }
 
         botStateCache.setBotState(chatID, command);
-
         return sendMessage;
     }
 
@@ -76,19 +77,9 @@ public class Salary implements MessageHolder {
 
     private InlineKeyboardMarkup getMessageButtons() {
         InlineKeyboardMarkup replyKeyboardMarkup = new InlineKeyboardMarkup();
-
-        InlineKeyboardButton salary = InlineKeyboardButton.builder()
-                .text("Cancel")
-                .callbackData("Cancel")
-                .build();
-        InlineKeyboardButton other = InlineKeyboardButton.builder()
-                .text("Back")
-                .callbackData("Back")
-                .build();
-
         List<InlineKeyboardButton> keyboardButtonsRow = new ArrayList<>();
-        keyboardButtonsRow.add(salary);
-        keyboardButtonsRow.add(other);
+        keyboardButtonsRow.add(buttonGenerator.generateCancelButton());
+        keyboardButtonsRow.add(buttonGenerator.generateBackButton());
 
         List<List<InlineKeyboardButton>> keyboard = new ArrayList<>();
         keyboard.add(keyboardButtonsRow);
