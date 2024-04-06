@@ -1,5 +1,7 @@
+server:
+  port: 8090
+
 telegram:
   webhook-path: https://0f5b-194-152-36-30.ngrok-free.app
   username: abdulla_ali_bot
   token: 6659878764:AAHL4JGluDIpPfgOZScGkVHmP6-OzlvvwWM
-
