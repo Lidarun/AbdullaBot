@@ -7,6 +7,7 @@ import com.lidarunium.afpf.service.ButtonGenerator;
 import com.lidarunium.afpf.service.MessageGenerator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
@@ -48,9 +49,9 @@ public class Salary implements MessageHolder {
             command = Command.SALARY;
 
         } else {
-            boolean res = setSalary(userMsg);
-            if (res) {
-                msg = "Salary: " + message.getText();
+            boolean containDigits = userMsg.matches(".*\\d.*");
+            if (containDigits) {
+                msg = "Salary: " + getDigits(userMsg);
                 sendMessage = messageGenerator.generateMessage(chatID, msg);
                 command = null;
 
@@ -66,13 +67,9 @@ public class Salary implements MessageHolder {
         return sendMessage;
     }
 
-    private boolean setSalary(String msg) {
-        if (msg.matches(".*\\d.*")) {
-            double salarySize = Double.parseDouble(msg);
-            return true;
-        }
-
-        return false;
+    private long getDigits(String msg) {
+        String digits = msg.replaceAll("\\D", "");
+        return StringUtils.isBlank(digits) ? 0 : Long.parseLong(digits);
     }
 
     private InlineKeyboardMarkup getMessageButtons() {
