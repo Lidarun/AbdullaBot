@@ -12,7 +12,7 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 @Component
 @RequiredArgsConstructor
 public class Expense implements MessageHolder {
-    private final MessageGenerator generator;
+    private final MessageGenerator messageGenerator;
     private final BotStateCache botStateCache;
 
     @Override
@@ -29,6 +29,6 @@ public class Expense implements MessageHolder {
         long chatID = message.getChatId();
         botStateCache.setBotState(chatID, Command.DELETE_PREVIOUS_MESSAGE);
 
-        return generator.generateMessage(chatID, "Success!");
+        return messageGenerator.generateMessage(chatID, "Success!");
     }
 }

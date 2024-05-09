@@ -1,4 +1,4 @@
-package com.lidarunium.commons.entity;
+package com.lidarunium.web.entity;
 
 //import jakarta.persistence.*;
 //import lombok.Getter;

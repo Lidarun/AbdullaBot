@@ -14,7 +14,7 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMar
 @Component
 @RequiredArgsConstructor
 public class Start implements MessageHolder {
-    private final MessageGenerator generator;
+    private final MessageGenerator messageGenerator;
     private final BotKeyboardHandler keyboardHandler;
     private final BotStateCache botStateCache;
 
@@ -35,6 +35,6 @@ public class Start implements MessageHolder {
         ReplyKeyboardMarkup replyKeyboard = keyboardHandler.getKeyboardByBotCommand(Command.START);
 
         botStateCache.setBotState(chatID, null);
-        return generator.generateMessage(chatID, msg, replyKeyboard);
+        return messageGenerator.generateMessage(chatID, msg, replyKeyboard);
     }
 }

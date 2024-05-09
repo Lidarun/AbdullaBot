@@ -17,7 +17,7 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 public class Income implements MessageHolder {
-    private final MessageGenerator generator;
+    private final MessageGenerator messageGenerator;
     private final BotStateCache botStateCache;
 
     @Override
@@ -36,7 +36,7 @@ public class Income implements MessageHolder {
         InlineKeyboardMarkup inlineKeyboard = getMessageButtons();
 
         botStateCache.setBotState(chatID, Command.DELETE_PREVIOUS_MESSAGE);
-        return generator.generateMessage(chatID, msg, inlineKeyboard);
+        return messageGenerator.generateMessage(chatID, msg, inlineKeyboard);
     }
 
     private InlineKeyboardMarkup getMessageButtons() {

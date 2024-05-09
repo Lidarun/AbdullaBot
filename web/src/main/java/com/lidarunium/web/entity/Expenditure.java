@@ -1,4 +1,4 @@
-package com.lidarunium.commons.entity;
+package com.lidarunium.web.entity;
 
 //import com.lidarunium.afpf.enums.PaymentType;
 //import jakarta.persistence.*;

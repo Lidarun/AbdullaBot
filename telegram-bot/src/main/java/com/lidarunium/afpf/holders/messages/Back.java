@@ -8,16 +8,16 @@ import com.lidarunium.afpf.service.MessageGenerator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
 import java.util.Objects;
 
-@Service
+@Component
 @RequiredArgsConstructor
 public class Back implements MessageHolder {
-    private final MessageGenerator generator;
+    private final MessageGenerator messageGenerator;
     private final BotStateCache cache;
 
     @Autowired @Lazy
@@ -41,6 +41,6 @@ public class Back implements MessageHolder {
             cache.setBotState(chatID, null);
             return context.getMessageByBotState(command, message);
         }
-        return generator.generateMessage(chatID, "TODO: Something went wrong BACK button");
+        return messageGenerator.generateMessage(chatID, "TODO: Something went wrong BACK button");
     }
 }

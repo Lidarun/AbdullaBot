@@ -10,5 +10,5 @@ public enum Command {
     SALARY_SIZE,
     CANCEL,
     BACK,
-    DELETE_PREVIOUS_MESSAGE;
+    DELETE_PREVIOUS_MESSAGE, SAVE_SALARY;
 }
