@@ -1,4 +1,4 @@
-package com.lidarunium.commons.enums;
+package com.lidarunium.web.enums;
 
 public enum PaymentType {
     CASH("Наличные"),

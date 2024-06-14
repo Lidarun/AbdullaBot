@@ -25,8 +25,9 @@ public class CallbackQueryHandler {
             command = switch (query) {
                 case "Income" -> Command.INCOME;
                 case "Expense" -> Command.EXPENSE;
-                case "Salary" -> Command.SALARY;
                 case "Cancel" -> Command.CANCEL;
+                case "Salary", "Edit" -> Command.SALARY;
+                case "Save" -> Command.SAVE_SALARY;
 
                 default -> null;
             };
@@ -36,6 +37,7 @@ public class CallbackQueryHandler {
                 command = switch (query) {
                     case "Cancel" -> Command.CANCEL;
                     case "Back" -> Command.BACK;
+
                     default -> null;
                 };
         }

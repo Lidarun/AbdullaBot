@@ -18,7 +18,6 @@
 
     <modules>
         <module>web</module>
-        <module>commons</module>
         <module>telegram-bot</module>
     </modules>
 

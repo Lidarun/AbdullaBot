@@ -1,4 +1,4 @@
-package com.lidarunium.commons.repository;
+package com.lidarunium.web.repository;
 
 //import com.lidarunium.afpf.entity.User;
 //import org.springframework.data.jpa.repository.JpaRepository;
